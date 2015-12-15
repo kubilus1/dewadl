@@ -26,17 +26,17 @@ Run a command, perhaps providing arguments
 
 How about a generic use case:
 
-    import dewadl
+    from dewadl import dewadl
 
-    myapi = dewadl(wadl_file="localfile.wadl")
+    myapi = dewadl.wadl_processor(wadl_file="localfile.wadl")
 
     myapi.doStuff()
 
-If we were to use this with uDeploy:
+If we were to use this with a remote uDeploy server:
 
-    import dewadl
+    from dewadl import dewadl
 
-    ucd = dewadl(wadl_url="https://myucdserver.com/rest/application.wadl", userid="myuser", passwd="mypass")
+    ucd = dewadl.wadl_processor(wadl_url="https://myucdserver.com/rest/application.wadl", userid="myuser", passwd="mypass")
 
     apps = ucd.getActiveApplications()
     for app in apps:
