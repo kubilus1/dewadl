@@ -10,17 +10,16 @@ dewadl provides several use case:  CLI mode, API mode, interactive mode.
 
 ### CLI mode
 
+Lists all options.  (See Configuration below)
+
     $ ./dewadl.py -h 
 
-    Lists all options.  (See Configuration below)
-
+Lists all available commands for the WADL you are using
     $ ./dewadl.py help
 
-    Lists all available commands for the WADL you are using
+Run a command, perhaps providing arguments
 
     $ ./dewadly.py <CMD> [arg1 ... argN]
-
-    Run a command, perhaps providing arguments
 
 
 ### API mode
@@ -44,7 +43,7 @@ If we were to use this with uDeploy:
         print app.id, app.name
 
 
-### interactive mode
+### Interactive mode
 
 It may be useful to be able to interactively explore API commands.  To run dewadl in interactive mode, use the -i parameter.
 
@@ -59,9 +58,9 @@ It may be useful to be able to interactively explore API commands.  To run dewad
 
 This provides all available commands under the 'wadl' object with tab completion.
 
-   W) wadl.getActive
-   wadl.getActiveAgentPools(                   wadl.getActiveComponentTemplateComponents(  wadl.getActiveResourcesWithAgentByPath(     wadl.getActiveVersionsByEnvironment(        
-   wadl.getActiveApplications(                 wadl.getActiveComponentTemplates(           wadl.getActiveTagsForType(        
+    W) wadl.getActive
+    wadl.getActiveAgentPools(                   wadl.getActiveComponentTemplateComponents(  wadl.getActiveResourcesWithAgentByPath(     wadl.getActiveVersionsByEnvironment(        
+    wadl.getActiveApplications(                 wadl.getActiveComponentTemplates(           wadl.getActiveTagsForType(        
 
 Use standard python 'help' to get info on a particular command:
 
