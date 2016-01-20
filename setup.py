@@ -6,7 +6,7 @@ setup(
     description="Turn WADL descriptions into python APIs",
     author="Matt Kubilus",
     author_email="mattkubilus@gmail.com",
-    packages=['dewadl'],
-    package_dir={'dewadl':'.'},
+    packages=['Dewadl'],
+    package_dir={'Dewadl':'.'},
     scripts=['dewadl.py']
 )
