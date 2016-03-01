@@ -84,8 +84,10 @@ class wadl_processor(object):
         try:
             response = urllib2.urlopen(req)
         except urllib2.HTTPError, err:
-            print "Error getting url: %s" % myurl
+            print "Error %sting url: %s" % (mtype, myurl)
             print err
+            return
+
         con_type = response.info().getheader('Content-Type')
         resp_data = response.read()
 
@@ -142,6 +144,7 @@ class wadl_processor(object):
     def __handleResource(self, resource, path=""):
         if DEBUG:
             print "resource", resource.tag, resource.get('path')
+        prev_path = path
         path = '/'.join([path, resource.get('path')])
         params = re.findall("{(.*?)}", path)
         method=None
@@ -149,11 +152,29 @@ class wadl_processor(object):
             # We have to assume params come before methods
             if node.tag == "{%s}method" % self.ns.get('ns'):
                 mtype, method, method_params = self.__handleMethod(node, path)
+
+                if hasattr(self, method):
+                    # We have clashed with an existing method name
+
+                    # TODO: After we process the entire file, perhaps cleanup original clashed name
+                    basename = os.path.basename(prev_path)
+                    if DEBUG:
+                        print "RESOURCE: ", prev_path
+                        print "Method %s already exists.  Adjusting name to %s" % (method, "%s_%s" % (basename, method))
+                        
+                    old_method_t = getattr(self, method)
+                    method = "%s_%s" % (basename, method)
+                    old_method_name = "%s_%s" % (os.path.basename(old_method_t.__prev_path), old_method_t.__name__)
+                    if DEBUG:
+                        print "Also updating %s to %s" %  (old_method_t.__name__, old_method_name) 
+                    setattr(self, old_method_name, old_method_t)
+
                 params.extend(method_params)
                 #print "Create method for %s" % path
                 tmethod = self.__method_creator(path, mtype, tuple(params))
                 tmethod.__doc__ = "%s accepts arguments: %s" % (method, params)
                 tmethod.__name__ = method
+                tmethod.__prev_path = prev_path
                 setattr(self, method, tmethod)
                 #params = []
             if node.tag == "{%s}param" % self.ns.get('ns'):
