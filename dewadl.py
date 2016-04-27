@@ -191,7 +191,8 @@ class wadl_processor(object):
         for node in request:
             if node.tag == "{%s}param" % self.ns.get('ns'):
                 param = self.__handleParam(node, "")
-                tparams.append(param)
+                if param:
+                    tparams.append(param)
 
         return tparams
         
@@ -217,8 +218,12 @@ class wadl_processor(object):
 
     def __handleParam(self, param, path):
         if DEBUG:
-            print "  ", param.tag, param.get('name'), param.get('type')
-        return param.get('name')
+            print "  ", param.tag, param.get('name'), param.get('type'), param.get('style')
+        
+        p = None
+        if param.get('style') == 'template':
+            p = param.get('name')
+        return p
 
     def __process_wadl(self, wadl_file=None, wadl_string=None):
         if wadl_file:
@@ -230,12 +235,12 @@ class wadl_processor(object):
             print "Must provide either wadl_file or wadl_string"
             return 1
 
-        print root.tag
+        #print root.tag
 
         m = re.match("\{(.*)\}application", root.tag)
         if m:
             self.ns['ns'] = m.groups()[0]
-            print "Setting namespace to: %s" % self.ns.get('ns')
+            #print "Setting namespace to: %s" % self.ns.get('ns')
 
         for resources in root.findall('{%s}resources' % self.ns.get('ns')):
             self.__handleResources(resources)
