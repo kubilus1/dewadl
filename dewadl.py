@@ -53,7 +53,8 @@ class wadl_processor(object):
             p = urlparse.urlparse(url)
             auth_url = "%s://%s" % (p.scheme, p.netloc)
 
-            print "Authenticating to %s" % auth_url
+            if DEBUG:
+                print "Authenticating to %s" % auth_url
             
             connected = False
             for i in range(5):
@@ -68,7 +69,8 @@ class wadl_processor(object):
                     time.sleep(i)
                     continue
                 connected = True
-                print "Successfully authenticated."
+                if DEBUG:
+                    print "Successfully authenticated."
                 break 
             
             if not connected:
@@ -137,7 +139,8 @@ class wadl_processor(object):
         if DEBUG:
             print resources
         self.base_url = resources.get("base")
-        print "Setting base_url to: %s" % self.base_url
+        if DEBUG:
+            print "Setting base_url to: %s" % self.base_url
         for resource in resources:
             self.__handleResource(resource)
 
@@ -244,7 +247,6 @@ class wadl_processor(object):
 
         for resources in root.findall('{%s}resources' % self.ns.get('ns')):
             self.__handleResources(resources)
-        print "Done processing wadl"
 
 
 def call_method(obj, args):
